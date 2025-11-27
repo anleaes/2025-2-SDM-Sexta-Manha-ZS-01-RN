@@ -10,5 +10,4 @@ const HomeScreen = ({ navigation }: Props) => (
     <Text>Tela Inicial</Text>
   </View>
 );
-
 export default HomeScreen;

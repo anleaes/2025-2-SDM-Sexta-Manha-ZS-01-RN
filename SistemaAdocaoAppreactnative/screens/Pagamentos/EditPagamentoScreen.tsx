@@ -32,18 +32,29 @@ const EditPagamentoScreen = ({ route, navigation }: Props) => {
       campanha: pagamento.campanha,
       doador: pagamento.doador
     };
-
-    const res = await fetch(
-      `http://10.0.2.2:8000/pagamentos/${pagamento.id}/`,
+    try {
+      const API_URL = `http://localhost:8000/pagamento/${pagamento.id}/`;
+    
+      const response = await fetch(API_URL,
       {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       }
     );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Erro ${response.status}: ${errorText}`);
+    }
     
-    navigation.navigate('Pagamentos');        
-    setSaving(false);  
+    navigation.navigate('Pagamentos'); 
+      
+    } catch (error) {
+      alert('Erro ao atualizar: ' + error);
+    } finally {
+    setSaving(false); 
+    } 
   };
 
   const getFormaPagamentoText = (forma: string) => {

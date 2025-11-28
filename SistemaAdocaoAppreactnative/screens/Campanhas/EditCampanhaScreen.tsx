@@ -44,17 +44,28 @@ const EditCampanhaScreen = ({ route, navigation }: Props) => {
       ong: campanha.ong
     };
 
-    const res = await fetch(
-      `http://10.0.2.2:8000/campanhas/${campanha.id}/`,
-      {
+    try {
+    const API_URL = `http://localhost:8000/campanha/${campanha.id}/`;
+
+    const response = await fetch(API_URL,{
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       }
     );
     
-    navigation.navigate('Campanhas');        
-    setSaving(false);  
+     if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Erro ${response.status}: ${errorText}`);
+    }
+
+    navigation.navigate('Campanhas');
+
+    } catch (error) {
+      alert('Erro ao atualizar: ' + error);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const getStatusText = (status: string) => {

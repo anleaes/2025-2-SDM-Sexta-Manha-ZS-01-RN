@@ -31,17 +31,27 @@ const EditOngScreen = ({ route, navigation }: Props) => {
       data_fundacao 
     };
 
-    const res = await fetch(
-      `http://10.0.2.2:8000/ongs/${ong.id}/`,
-      {
+    try {
+    const API_URL = `http://localhost:8000/ong/${ong.id}/`;
+
+    const response = await fetch(API_URL, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       }
     );
     
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Erro ${response.status}: ${errorText}`);
+    }
+
     navigation.navigate('Ongs');        
-    setSaving(false);  
+    } catch (error) {
+      alert('Erro ao atualizar: ' + error);
+    } finally {
+      setSaving(false);
+     }  
   };
 
   return (

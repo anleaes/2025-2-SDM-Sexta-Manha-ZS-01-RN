@@ -37,17 +37,27 @@ const EditAgendamentoScreen = ({ route, navigation }: Props) => {
       adocao: agendamentoVisita.adocao
     };
 
-    const res = await fetch(
-      `http://10.0.2.2:8000/agendamentos/${agendamentoVisita.id}/`,
-      {
+    try {
+    const API_URL = `http://localhost:8000/agendamento/${agendamentoVisita.id}/`;
+
+     const response = await fetch(API_URL, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       }
     );
     
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Erro ${response.status}: ${errorText}`);
+    }
+
     navigation.navigate('Agendamentos');        
-    setSaving(false);  
+     } catch (error) {
+      alert('Erro ao atualizar: ' + error);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const getStatusText = (status: string) => {

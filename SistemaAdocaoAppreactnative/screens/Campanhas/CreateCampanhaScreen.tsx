@@ -45,14 +45,27 @@ const CreateCampanhaScreen = ({ navigation }: Props) => {
       status: 'A'
     };
 
-    const res = await fetch('http://10.0.2.2:8000/campanhas/', {
+    try {
+    const API_URL = 'http://localhost:8000/campanha/';
+
+    const response = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Erro ${response.status}: ${errorText}`);
+    }
+
     navigation.navigate('Campanhas');  
-    setSaving(false);
+
+    } catch (error) {
+      alert('Erro ao cadastrar: ' + error);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (

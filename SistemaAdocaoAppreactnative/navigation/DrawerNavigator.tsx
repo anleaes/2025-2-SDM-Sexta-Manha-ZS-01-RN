@@ -14,9 +14,12 @@ import CreateOng from '../screens/Ongs/CreateOngScreen';
 import AdocoesScreen, {Adocao} from '../screens/Adocoes/AdocoesScreen';
 import CreateAdocaoScreen from '../screens/Adocoes/CreateAdocaoScreen';
 import EditAdocaoScreen from '../screens/Adocoes/EditAdocaoScreen';
-import AgendamentosScreen, { AgendamentoVisita } from '../screens/Agendamento/AgendamentosScreen';
-import CreateAgendamentoScreen from '../screens/Agendamento/CreateAgendamentoScreen';
-import EditAgendamentoScreen from '../screens/Agendamento/EditAgendamentoScreen';
+import AgendamentosScreen, { AgendamentoVisita } from '../screens/Agendamentos/AgendamentosScreen';
+import CreateAgendamentoScreen from '../screens/Agendamentos/CreateAgendamentoScreen';
+import EditAgendamentoScreen from '../screens/Agendamentos/EditAgendamentoScreen';
+import PagamentosScreen, { Pagamento } from '../screens/Pagamentos/PagamentosScreen';
+import CreatePagamentoScreen from '../screens/Pagamentos/CreatePagamentoScreen';
+import EditPagamentoScreen from '../screens/Pagamentos/EditPagamentoScreen';
 
 
 export type DrawerParamList = {
@@ -37,7 +40,12 @@ export type DrawerParamList = {
   Agendamentos: undefined;
   CreateAgendamento: undefined;  
   EditAgendamento: { agendamentoVisita: AgendamentoVisita };
+
+  Pagamentos: undefined;
+  CreatePagamento: undefined; 
+  EditPagamento: { pagamento: Pagamento };
 };
+
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -136,6 +144,25 @@ const DrawerNavigator = () => {
         name="EditAgendamento"
         component={EditAgendamentoScreen}
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Adocao' }}
+      />
+
+      <Drawer.Screen
+        name="Pagamentos"
+        component={PagamentosScreen}
+        options={{
+         drawerIcon: ({ color, size }) => <Ionicons name="card-outline" size={size} color={color} />,
+        title: 'Pagamentos',
+        }}
+      />
+      <Drawer.Screen
+        name="CreatePagamento"
+        component={CreatePagamentoScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Novo Pagamento' }}
+      />
+      <Drawer.Screen
+        name="EditPagamento"
+        component={EditPagamentoScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Pagamento' }}
       />
 
 

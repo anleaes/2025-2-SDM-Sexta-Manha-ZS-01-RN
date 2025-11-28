@@ -11,6 +11,9 @@ import HomeScreen from '../screens/HomeScreen';
 import OngsScreen, { Ong } from '../screens/Ongs/OngsScreen';
 import EditOng from '../screens/Ongs/EditOngScreen';
 import CreateOng from '../screens/Ongs/CreateOngScreen';
+import AdocoesScreen, {Adocao} from '../screens/Adocoes/AdocoesScreen';
+import CreateAdocaoScreen from '../screens/Adocoes/CreateAdocaoScreen';
+import EditAdocaoScreen from '../screens/Adocoes/EditAdocaoScreen';
 
 
 export type DrawerParamList = {
@@ -21,6 +24,9 @@ export type DrawerParamList = {
   Ongs: undefined;
   CreateOng: undefined;
   EditOng: { ong: Ong };
+  Adocoes: undefined;
+  CreateAdocao: undefined;
+  EditAdocao: { adocao: Adocao };
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -64,6 +70,7 @@ const DrawerNavigator = () => {
         component={EditAnimalScreen}
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar animal' }}
       />
+
       <Drawer.Screen
         name="Ongs"
         component={OngsScreen}
@@ -82,6 +89,28 @@ const DrawerNavigator = () => {
         component={EditOng}
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar ONG' }}
       />
+
+      <Drawer.Screen
+        name="Adocoes"
+        component={AdocoesScreen}
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="heart-outline" size={size} color={color} />,
+          title: 'Adocao',
+        }}
+      />
+      <Drawer.Screen
+        name="CreateAdocao"
+        component={CreateAdocaoScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Adocao' }}
+      />
+      <Drawer.Screen
+        name="EditAdocao"
+        component={EditAdocaoScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Adocao' }}
+      />
+
+
+
     </Drawer.Navigator>  
   );
 };

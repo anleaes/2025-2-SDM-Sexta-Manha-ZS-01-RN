@@ -20,7 +20,9 @@ import EditAgendamentoScreen from '../screens/Agendamentos/EditAgendamentoScreen
 import PagamentosScreen, { Pagamento } from '../screens/Pagamentos/PagamentosScreen';
 import CreatePagamentoScreen from '../screens/Pagamentos/CreatePagamentoScreen';
 import EditPagamentoScreen from '../screens/Pagamentos/EditPagamentoScreen';
-
+import MonitoramentosScreen, { MonitoramentoPosAdocao } from '../screens/Monitoramentos/MonitoramentosScreen';
+import CreateMonitoramentoScreen from '../screens/Monitoramentos/CreateMonitoramentoScreen';
+import EditMonitoramentoScreen from '../screens/Monitoramentos/EditMonitoramentoScreen';
 
 export type DrawerParamList = {
   Home: undefined;
@@ -44,6 +46,10 @@ export type DrawerParamList = {
   Pagamentos: undefined;
   CreatePagamento: undefined; 
   EditPagamento: { pagamento: Pagamento };
+
+  Monitoramentos: undefined;
+  CreateMonitoramento: undefined; 
+  EditMonitoramento: { monitoramento: MonitoramentoPosAdocao };
 };
 
 
@@ -165,9 +171,26 @@ const DrawerNavigator = () => {
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Pagamento' }}
       />
 
+      <Drawer.Screen
+        name="Monitoramentos"
+        component={MonitoramentosScreen}
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="eye-outline" size={size} color={color} />,
+        title: 'Monitoramentos',
+        }}
+      />
+      <Drawer.Screen
+        name="CreateMonitoramento"
+        component={CreateMonitoramentoScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Novo Monitoramento' }}
+      />
+      <Drawer.Screen
+        name="EditMonitoramento"
+        component={EditMonitoramentoScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Monitoramento' }}
+      />
 
     </Drawer.Navigator>  
   );
 };
-
 export default DrawerNavigator;

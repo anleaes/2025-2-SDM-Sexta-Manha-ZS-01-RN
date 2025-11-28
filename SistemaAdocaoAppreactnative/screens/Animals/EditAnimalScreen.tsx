@@ -49,23 +49,23 @@ const EditAnimalScreen = ({ route, navigation }: Props) => {
     };
 
     try {
-      const response = await fetch(
-        `http://10.0.2.2:8000/animais/${animal.id}/`,
-        {
+      const API_URL = `http://localhost:8000/animal/${animal.id}/`;
+
+      const response = await fetch(API_URL, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         }
       );
 
-      if (response.ok) {
-        navigation.navigate('Animals');
-      } else {
-        alert('Erro ao atualizar animal');
-      }
+      if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Erro ${response.status}: ${errorText}`);
+    }
+      navigation.navigate('Animals');
+
     } catch (error) {
-      console.error('Erro:', error);
-      alert('Erro de conexão');
+      alert('Erro ao atualizar ' + error);
     } finally {
       setSaving(false);
     }

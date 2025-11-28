@@ -31,14 +31,27 @@ const CreateAdocaoScreen = ({ navigation }: Props) => {
       requer_documentos: true
     };
 
-    const res = await fetch('http://10.0.2.2:8000/adocoes/', {
+    try {
+    const API_URL = `http://localhost:8000/adocao/`;
+
+    const response = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Erro ${response.status}: ${errorText}`);
+    }
+
     navigation.navigate('Adocoes');  
-    setSaving(false);
+
+     } catch (error) {
+      alert('Erro ao cadastrar: ' + error);
+    } finally {
+      setSaving(false);
+  }
   };
 
   return (

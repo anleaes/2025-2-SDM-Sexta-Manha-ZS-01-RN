@@ -50,20 +50,26 @@ const CreateAnimalScreen = ({ navigation }: Props) => {
     };
 
     try {
-      const response = await fetch('http://10.0.2.2:8000/animais/', {
+      const API_URL = 'http://localhost:8000/animal/';
+
+       const response = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(payload),
       });
 
-      if (response.ok) {
-        navigation.navigate('Animals');  
-      } else {
-        alert('Erro ao salvar animal');
+       if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Erro ${response.status}: ${errorText}`);
       }
+
+      navigation.navigate('Animals');
+
+     
     } catch (error) {
-      console.error('Erro:', error);
-      alert('Erro de conexão');
+      alert('Erro ao cadastrar' + error);
     } finally {
       setSaving(false);
     }

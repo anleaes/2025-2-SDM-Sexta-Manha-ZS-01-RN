@@ -31,17 +31,27 @@ const EditAdocaoScreen = ({ route, navigation }: Props) => {
       animal: adocao.animal
     };
 
-    const res = await fetch(
-      `http://10.0.2.2:8000/adocoes/${adocao.id}/`,
-      {
+      try {
+      const API_URL = `http://localhost:8000/adocao/${adocao.id}/`;
+
+     const response = await fetch(API_URL,{
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       }
     );
     
-    navigation.navigate('Adocoes');        
-    setSaving(false);  
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Erro ${response.status}: ${errorText}`);
+    }
+
+    navigation.navigate('Adocoes');   
+     } catch (error) {
+      alert('Erro ao atualizar: ' + error);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const getStatusText = (status: string) => {

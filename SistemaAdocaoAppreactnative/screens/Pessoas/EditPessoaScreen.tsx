@@ -42,17 +42,28 @@ const EditPessoaScreen = ({ route, navigation }: Props) => {
       campanhas_participadas: pessoa.campanhas_participadas
     };
 
-    const res = await fetch(
-      `http://10.0.2.2:8000/pessoas/${pessoa.id}/`,
-      {
+    try {
+    const API_URL = `http://localhost:8000/pessoa/${pessoa.id}/`;
+
+
+     const response = await fetch(API_URL, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       }
     );
     
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Erro ${response.status}: ${errorText}`);
+    }
+
     navigation.navigate('Pessoas');        
+    } catch (error) {
+      alert('Erro ao atualizar: ' + error);
+    } finally {
     setSaving(false);  
+    }
   };
 
   const getTipoRelacionamentoText = (tipo: string) => {

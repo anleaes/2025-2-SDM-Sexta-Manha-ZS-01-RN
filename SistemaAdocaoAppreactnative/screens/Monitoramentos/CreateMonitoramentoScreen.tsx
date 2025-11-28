@@ -38,14 +38,26 @@ const CreateMonitoramentoScreen = ({ navigation }: Props) => {
       resultado
     };
 
-    const res = await fetch('http://10.0.2.2:8000/monitoramentos/', {
+    try {
+    const API_URL = 'http://localhost:8000/monitoramento/';
+
+    const response = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Erro ${response.status}: ${errorText}`);
+    }
     navigation.navigate('Monitoramentos');  
-    setSaving(false);
+
+    } catch (error) {
+      alert('Erro ao cadastrar: ' + error);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const getStatusSaudeText = (status: string) => {

@@ -29,6 +29,7 @@ const CreatePessoaScreen = ({ navigation }: Props) => {
   );
 
   const handleSave = async () => {
+
     setSaving(true);
     
     const payload = { 
@@ -42,14 +43,31 @@ const CreatePessoaScreen = ({ navigation }: Props) => {
       campanhas_participadas: []
     };
 
-    const res = await fetch('http://10.0.2.2:8000/pessoas/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+
+ try {
+      const API_URL = 'http://localhost:8000/pessoa/'; 
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
     });
 
-    navigation.navigate('Pessoas');  
-    setSaving(false);
+
+    if (!res.ok) {
+        const errorText = await res.text();
+        console.error('❌ Erro do servidor:', errorText);
+        throw new Error(`Erro ${res.status}: ${errorText}`);
+      }
+
+      navigation.navigate('Pessoas');  
+      
+    } catch (error) {
+      alert('Erro ao cadastrar: ' + error);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const getTipoRelacionamentoText = (tipo: string) => {

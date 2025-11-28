@@ -8,8 +8,9 @@ import AnimalsScreen, { Animal } from '../screens/Animals/AnimalsScreen';
 import CreateAnimalScreen from '../screens/Animals/CreateAnimalScreen';
 import EditAnimalScreen from '../screens/Animals/EditAnimalScreen';
 import HomeScreen from '../screens/HomeScreen'; 
-import OngsScreen from '../screens/OngsScreen';
-import AdoptionsScreen from '../screens/AdoptionsScreen';
+import OngsScreen, { Ong } from '../screens/Ongs/OngsScreen';
+import EditOng from '../screens/Ongs/EditOngScreen';
+import CreateOng from '../screens/Ongs/CreateOngScreen';
 
 
 export type DrawerParamList = {
@@ -18,7 +19,8 @@ export type DrawerParamList = {
   CreateAnimal: undefined; 
   EditAnimal: { animal: Animal };
   Ongs: undefined;
-  Adoptions: undefined;  
+  CreateOng: undefined;
+  EditOng: { ong: Ong };
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -67,17 +69,19 @@ const DrawerNavigator = () => {
         component={OngsScreen}
         options={{
           drawerIcon: ({ color, size }) => <Ionicons name="business-outline" size={size} color={color} />,
-          title: 'Ongs',
+          title: 'Ong',
         }}
+      />     
+      <Drawer.Screen
+        name="CreateOng"
+        component={CreateOng}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Nova ONG' }}
       />
       <Drawer.Screen
-        name="Adoptions"
-        component={AdoptionsScreen}
-        options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="paw-outline" size={size} color={color} />,
-          title: 'Adocoes',
-        }}
-      />      
+        name="EditOng"
+        component={EditOng}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar ONG' }}
+      />
     </Drawer.Navigator>  
   );
 };

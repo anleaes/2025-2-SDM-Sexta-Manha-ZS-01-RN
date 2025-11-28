@@ -23,6 +23,9 @@ import EditPagamentoScreen from '../screens/Pagamentos/EditPagamentoScreen';
 import MonitoramentosScreen, { MonitoramentoPosAdocao } from '../screens/Monitoramentos/MonitoramentosScreen';
 import CreateMonitoramentoScreen from '../screens/Monitoramentos/CreateMonitoramentoScreen';
 import EditMonitoramentoScreen from '../screens/Monitoramentos/EditMonitoramentoScreen';
+import CampanhasScreen, { Campanha } from '../screens/Campanhas/CampanhasScreen';
+import CreateCampanhaScreen from '../screens/Campanhas/CreateCampanhaScreen';
+import EditCampanhaScreen from '../screens/Campanhas/EditCampanhaScreen';
 
 export type DrawerParamList = {
   Home: undefined;
@@ -50,7 +53,12 @@ export type DrawerParamList = {
   Monitoramentos: undefined;
   CreateMonitoramento: undefined; 
   EditMonitoramento: { monitoramento: MonitoramentoPosAdocao };
+
+  Campanhas: undefined;
+  CreateCampanha: undefined; 
+  EditCampanha: { campanha: Campanha };
 };
+
 
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -189,6 +197,27 @@ const DrawerNavigator = () => {
         component={EditMonitoramentoScreen}
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Monitoramento' }}
       />
+
+      <Drawer.Screen
+        name="Campanhas"
+        component={CampanhasScreen}
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="megaphone-outline" size={size} color={color} />,
+        title: 'Campanhas',
+        }}
+      />
+      <Drawer.Screen
+        name="CreateCampanha"
+        component={CreateCampanhaScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Nova Campanha' }}
+      />
+      <Drawer.Screen
+        name="EditCampanha"
+        component={EditCampanhaScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Campanha' }}
+      />
+
+
 
     </Drawer.Navigator>  
   );

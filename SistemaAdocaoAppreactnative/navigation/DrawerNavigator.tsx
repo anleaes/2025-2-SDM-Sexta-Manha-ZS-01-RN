@@ -14,19 +14,29 @@ import CreateOng from '../screens/Ongs/CreateOngScreen';
 import AdocoesScreen, {Adocao} from '../screens/Adocoes/AdocoesScreen';
 import CreateAdocaoScreen from '../screens/Adocoes/CreateAdocaoScreen';
 import EditAdocaoScreen from '../screens/Adocoes/EditAdocaoScreen';
+import AgendamentosScreen, { AgendamentoVisita } from '../screens/Agendamento/AgendamentosScreen';
+import CreateAgendamentoScreen from '../screens/Agendamento/CreateAgendamentoScreen';
+import EditAgendamentoScreen from '../screens/Agendamento/EditAgendamentoScreen';
 
 
 export type DrawerParamList = {
   Home: undefined;
+
   Animals: undefined;
   CreateAnimal: undefined; 
   EditAnimal: { animal: Animal };
+
   Ongs: undefined;
   CreateOng: undefined;
   EditOng: { ong: Ong };
+
   Adocoes: undefined;
   CreateAdocao: undefined;
   EditAdocao: { adocao: Adocao };
+
+  Agendamentos: undefined;
+  CreateAgendamento: undefined;  
+  EditAgendamento: { agendamentoVisita: AgendamentoVisita };
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -109,6 +119,24 @@ const DrawerNavigator = () => {
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Adocao' }}
       />
 
+      <Drawer.Screen
+        name="Agendamentos"
+        component={AgendamentosScreen}
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="alarm-outline" size={size} color={color} />,
+          title: 'Agendamento Visitacao',
+        }}
+      />  
+      <Drawer.Screen
+        name="CreateAgendamento"
+        component={CreateAgendamentoScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Agendar Visitacao' }}
+      />
+      <Drawer.Screen
+        name="EditAgendamento"
+        component={EditAgendamentoScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Adocao' }}
+      />
 
 
     </Drawer.Navigator>  

@@ -5,35 +5,36 @@ import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DrawerParamList } from '../../navigation/DrawerNavigator';
 
-type Props = DrawerScreenProps<DrawerParamList, 'Adocoes'>;
+type Props = DrawerScreenProps<DrawerParamList, 'Agendamentos'>;
 
-export type Adocao = {
+export type AgendamentoVisita = {
   id: number;
-  data_solicitacao: string;
-  data_conclusao: string;
-  status: string;
-  requer_documentos: boolean;
+  data_hora_visita: string;
+  local_visita: string;
+  status_agendamento: string;
   observacoes: string;
+  feedback_ong: string;
   solicitante: number;
-  animal: number;
-  animal_nome?: string;
+  ong: number;
+  adocao: number;
   solicitante_nome?: string;
+  ong_nome?: string;
 };
 
-const AdocoesScreen = ({ navigation }: Props) => {
-  const [adocoes, setAdocoes] = useState<Adocao[]>([]);
+const AgendamentosScreen = ({ navigation }: Props) => {
+  const [agendamentos, setAgendamentos] = useState<AgendamentoVisita[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = 'http://10.0.2.2:8000/adocoes/';
+  const API_URL = 'http://10.0.2.2:8000/agendamentos/';
 
-  const fetchAdocoes = async () => {
+  const fetchAgendamentos = async () => {
     setLoading(true);
     try {
       const response = await fetch(API_URL);
       const data = await response.json();
-      setAdocoes(data);
+      setAgendamentos(data);
     } catch (error) {
-      console.error("Erro ao buscar adoções:", error);
+      console.error("Erro ao buscar agendamentos:", error);
     } finally {
       setLoading(false);
     }
@@ -41,69 +42,71 @@ const AdocoesScreen = ({ navigation }: Props) => {
 
   useFocusEffect(
     useCallback(() => {
-      fetchAdocoes();
+      fetchAgendamentos();
     }, [])
   );
 
   const handleDelete = async (id: number) => {
     try {
       await fetch(`${API_URL}${id}/`, { method: 'DELETE' });
-      setAdocoes(prev => prev.filter(a => a.id !== id));
+      setAgendamentos(prev => prev.filter(a => a.id !== id));
     } catch (error) {
-      console.error("Erro ao deletar adoção:", error);
+      console.error("Erro ao deletar agendamento:", error);
     }
   };
 
   const getStatusText = (status: string) => {
     switch(status) {
-      case 'S': return 'Solicitada';
-      case 'E': return 'Em Avaliação';
-      case 'A': return 'Aprovada';
-      case 'C': return 'Concluída';
-      case 'R': return 'Rejeitada';
+      case 'P': return 'Pendente';
+      case 'C': return 'Confirmado';
+      case 'R': return 'Realizado';
+      case 'A': return 'Cancelado';
       default: return status;
     }
   };
 
   const getStatusColor = (status: string) => {
     switch(status) {
-      case 'S': return styles.statusSolicitada;
-      case 'E': return styles.statusAvaliacao;
-      case 'A': return styles.statusAprovada;
-      case 'C': return styles.statusConcluida;
-      case 'R': return styles.statusRejeitada;
-      default: return styles.statusSolicitada;
+      case 'P': return styles.statusPendente;
+      case 'C': return styles.statusConfirmado;
+      case 'R': return styles.statusRealizado;
+      case 'A': return styles.statusCancelado;
+      default: return styles.statusPendente;
     }
   };
 
-  const renderItem = ({ item }: { item: Adocao }) => (
+  const formatDateTime = (dateTime: string) => {
+    const date = new Date(dateTime);
+    return date.toLocaleString('pt-BR');
+  };
+
+  const renderItem = ({ item }: { item: AgendamentoVisita }) => (
     <View style={styles.card}>
-      <Text style={styles.name}>Adoção #{item.id}</Text>
+      <Text style={styles.name}>Agendamento #{item.id}</Text>
       <Text style={styles.description}>
-        Animal: {item.animal_nome || `ID ${item.animal}`}
+        Local: {item.local_visita}
+      </Text>
+      <Text style={styles.dateTime}>
+        {formatDateTime(item.data_hora_visita)}
       </Text>
       <Text style={styles.description}>
         Solicitante: {item.solicitante_nome || `ID ${item.solicitante}`}
       </Text>
-      <Text style={styles.date}>
-        Solicitação: {new Date(item.data_solicitacao).toLocaleDateString('pt-BR')}
+      <Text style={styles.description}>
+        ONG: {item.ong_nome || `ID ${item.ong}`}
       </Text>
-      {item.data_conclusao && (
-        <Text style={styles.date}>
-          Conclusão: {new Date(item.data_conclusao).toLocaleDateString('pt-BR')}
-        </Text>
-      )}
-      <Text style={[styles.status, getStatusColor(item.status)]}>
-        {getStatusText(item.status)}
+      <Text style={[styles.status, getStatusColor(item.status_agendamento)]}>
+        {getStatusText(item.status_agendamento)}
       </Text>
-      {item.requer_documentos && (
-        <Text style={styles.documentos}>Requer documentos</Text>
+      
+      {item.observacoes && (
+        <Text style={styles.observacoes}>Observações: {item.observacoes}</Text>
       )}
       
       <View style={styles.row}>
         <TouchableOpacity
           style={styles.editButton}
-          onPress={() => navigation.navigate('EditAdocao', { adocao: item })}
+          onPress={() => navigation.navigate('EditAgendamento', { agendamentoVisita: item })}
         >
           <Text style={styles.editText}>Editar</Text>
         </TouchableOpacity>
@@ -119,12 +122,12 @@ const AdocoesScreen = ({ navigation }: Props) => {
 
   return ( 
     <View style={styles.container}>
-      <Text style={styles.title}>Solicitações de Adoção</Text>
+      <Text style={styles.title}>Agendamentos de Visita</Text>
       {loading ? (
         <ActivityIndicator size="large" color="#4B7BE5" />
       ) : (
         <FlatList
-          data={adocoes}
+          data={agendamentos}
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
           contentContainerStyle={{ paddingBottom: 80 }}
@@ -132,7 +135,7 @@ const AdocoesScreen = ({ navigation }: Props) => {
       )}
       <TouchableOpacity
         style={styles.fab}
-        onPress={() => navigation.navigate('CreateAdocao')}
+        onPress={() => navigation.navigate('CreateAgendamento')}
       >
         <Ionicons name="add" size={28} color="#fff" />
       </TouchableOpacity>
@@ -175,10 +178,11 @@ const styles = StyleSheet.create({
     color: '#666',
     marginTop: 4,
   },
-  date: {
-    fontSize: 12,
-    color: '#888',
-    marginTop: 2,
+  dateTime: {
+    fontSize: 14,
+    color: '#444',
+    fontWeight: '500',
+    marginTop: 4,
   },
   status: {
     fontSize: 12,
@@ -188,29 +192,25 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     alignSelf: 'flex-start',
   },
-  statusSolicitada: {
-    backgroundColor: '#E3F2FD',
-    color: '#1565C0',
-  },
-  statusAvaliacao: {
+  statusPendente: {
     backgroundColor: '#FFF3E0',
     color: '#EF6C00',
   },
-  statusAprovada: {
+  statusConfirmado: {
     backgroundColor: '#E8F5E8',
     color: '#2E7D32',
   },
-  statusConcluida: {
-    backgroundColor: '#F3E5F5',
-    color: '#7B1FA2',
+  statusRealizado: {
+    backgroundColor: '#E3F2FD',
+    color: '#1565C0',
   },
-  statusRejeitada: {
+  statusCancelado: {
     backgroundColor: '#FFEBEE',
     color: '#C62828',
   },
-  documentos: {
+  observacoes: {
     fontSize: 12,
-    color: '#D32F2F',
+    color: '#666',
     marginTop: 4,
     fontStyle: 'italic',
   },
@@ -245,4 +245,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AdocoesScreen;
+export default AgendamentosScreen;

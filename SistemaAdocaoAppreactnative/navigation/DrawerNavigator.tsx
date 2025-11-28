@@ -26,6 +26,10 @@ import EditMonitoramentoScreen from '../screens/Monitoramentos/EditMonitoramento
 import CampanhasScreen, { Campanha } from '../screens/Campanhas/CampanhasScreen';
 import CreateCampanhaScreen from '../screens/Campanhas/CreateCampanhaScreen';
 import EditCampanhaScreen from '../screens/Campanhas/EditCampanhaScreen';
+import PessoasScreen, { Pessoa } from '../screens/Pessoas/PessoasScreen';
+import CreatePessoaScreen from '../screens/Pessoas/CreatePessoaScreen';
+import EditPessoaScreen from '../screens/Pessoas/EditPessoaScreen';
+
 
 export type DrawerParamList = {
   Home: undefined;
@@ -57,6 +61,10 @@ export type DrawerParamList = {
   Campanhas: undefined;
   CreateCampanha: undefined; 
   EditCampanha: { campanha: Campanha };
+
+  Pessoas: undefined;
+  CreatePessoa: undefined; 
+  EditPessoa: { pessoa: Pessoa };
 };
 
 
@@ -216,8 +224,24 @@ const DrawerNavigator = () => {
         component={EditCampanhaScreen}
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Campanha' }}
       />
-
-
+      <Drawer.Screen
+        name="Pessoas"
+        component={PessoasScreen}
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="people-outline" size={size} color={color} />,
+          title: 'Pessoas',
+          }}
+      />
+      <Drawer.Screen
+        name="CreatePessoa"
+        component={CreatePessoaScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Nova Pessoa' }}
+      />
+      <Drawer.Screen
+        name="EditPessoa"
+        component={EditPessoaScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Pessoa' }}
+      />
 
     </Drawer.Navigator>  
   );

@@ -4,6 +4,8 @@ import { useFocusEffect } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DrawerParamList } from '../../navigation/DrawerNavigator';
+import { getApiUrl, API_CONFIG } from '../../config/api';
+
 
 type Props = DrawerScreenProps<DrawerParamList, 'Campanhas'>;
 
@@ -25,7 +27,7 @@ const CampanhasScreen = ({ navigation }: Props) => {
   const [campanhas, setCampanhas] = useState<Campanha[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = 'http://10.0.2.2:8000/campanhas/';
+  const API_URL = getApiUrl(API_CONFIG.ENDPOINTS.CAMPANHAS);
 
   const fetchCampanhas = async () => {
     setLoading(true);

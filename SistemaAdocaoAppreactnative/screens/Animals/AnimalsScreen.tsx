@@ -4,6 +4,7 @@ import { useFocusEffect } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DrawerParamList } from '../../navigation/DrawerNavigator';
+import { getApiUrl, API_CONFIG } from '../../config/api';
 
 type Props = DrawerScreenProps<DrawerParamList, 'Animals'>;
 
@@ -25,7 +26,7 @@ const AnimalsScreen = ({ navigation }: Props) => {
   const [animals, setAnimals] = useState<Animal[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = 'http://10.0.2.2:8000/animais/'; 
+  const API_URL = getApiUrl(API_CONFIG.ENDPOINTS.ANIMAIS);
 
   const fetchAnimals = async () => {
     setLoading(true);

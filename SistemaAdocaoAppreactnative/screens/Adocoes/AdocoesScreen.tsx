@@ -4,6 +4,7 @@ import { useFocusEffect } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DrawerParamList } from '../../navigation/DrawerNavigator';
+import { getApiUrl, API_CONFIG } from '../../config/api';
 
 type Props = DrawerScreenProps<DrawerParamList, 'Adocoes'>;
 
@@ -24,7 +25,7 @@ const AdocoesScreen = ({ navigation }: Props) => {
   const [adocoes, setAdocoes] = useState<Adocao[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = 'http://10.0.2.2:8000/adocoes/';
+  const API_URL = getApiUrl(API_CONFIG.ENDPOINTS.ADOCOES);
 
   const fetchAdocoes = async () => {
     setLoading(true);
